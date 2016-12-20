@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",
-    "bootstrap-sass": "^3.3.6",
+    "bootstrap": "^4.0.0-alpha.5",
     "browser-sync": "^2.14.0",
     "critical": "^0.8.1",
     "cssnano": "^3.7.3",
