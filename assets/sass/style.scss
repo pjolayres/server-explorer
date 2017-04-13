@@ -3,3 +3,157 @@
 @import 'mixins/rtl';
 @import "bootstrap";
 @import 'global';
+
+body {
+  pointer-events: auto;
+  
+  h1 {
+    pointer-events: auto;
+  }
+  
+  h2 {
+    pointer-events: auto;
+  }
+  
+  h3 {    
+    pointer-events: auto;
+  }
+}
+
+.container {
+    pointer-events: auto;
+}
+
+.settings {
+  pointer-events: auto;
+  text-align: center;
+ 
+  .settings-form {
+    pointer-events: auto;
+    
+  }
+  
+  .settings-item {
+    pointer-events: auto;
+    margin-top: 20px;
+    
+    &:first-child {
+      margin-top: 0;
+    }
+    
+    legend {
+    pointer-events: auto;
+      
+    }
+  }
+  
+  .settings-servers {
+    pointer-events: auto;
+    
+    legend {
+    pointer-events: auto;
+      
+    }
+    
+    label {
+    pointer-events: auto;
+      
+    }
+    
+    input {
+    pointer-events: auto;
+      
+    }
+    
+    .text {
+    pointer-events: auto;
+      
+    }
+  }
+  
+  .settings-url {
+    pointer-events: auto;
+    
+    legend {
+    pointer-events: auto;
+      
+    }
+    
+    label {
+    pointer-events: auto;
+      
+    }
+    
+    input {
+    pointer-events: auto;
+      
+    }
+    
+    .text {
+    pointer-events: auto;
+      
+    }
+  }
+  
+  button[type="submit"] {
+    pointer-events: auto;
+    
+  }
+  
+}
+
+.serverStatus-container {
+    pointer-events: auto;
+  
+  .serverStatus-item {
+    pointer-events: auto;
+    
+  }
+  
+  .serverStatus-header {
+    pointer-events: auto;
+    
+    h3 {
+    pointer-events: auto;
+      
+    }    
+  }
+  
+  .serverStatus-expanderState {
+    pointer-events: auto;
+    
+    .serverStatus-minimized {
+    pointer-events: auto;
+      
+    }
+    
+    .serverStatus-maximized {
+    pointer-events: auto;
+      
+    }    
+  }
+  
+  .serverStatus-state {
+    pointer-events: auto;
+    
+    .serverStatus-success {
+    pointer-events: auto;
+      
+    }
+    
+    .serverStatus-failed {
+    pointer-events: auto;
+      
+    }    
+  }
+  
+  .serverStatus-content {
+    pointer-events: auto;
+    display: none;
+    
+    iframe {
+    pointer-events: auto;
+      
+    }
+  }
+}

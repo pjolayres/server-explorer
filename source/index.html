@@ -6,8 +6,60 @@
 </head>
 
 <body class='home'>
-    <div style="width:100vw; height:100vh; background-position: 50%; background-size:cover;background-image: url('https://i.ytimg.com/vi/tntOCGkgt98/maxresdefault.jpg')">
-        {{>header home_page=true}}
+    <div class="container-fluid">
+        <h1>Servers Explorer</h1>
+        <form class="settings" action="" method="get">
+            <fieldset>
+                <legend>Settings</legend>
+                <div class="settings-servers">
+                    <label><span class="text">Servers</span></label>
+                </div>
+                <div class="settings-url">
+                    <div class="form-group">
+                        <label>
+                            <span class="text">Url Path</span>
+                            <input type="text" class="form-control" name="UrlPath" value="/" />
+                        </label>
+                    </div>
+                </div>
+                <div class="settings-actionsContainer">
+                    <button type="submit" class="btn btn-default">Execute</button>
+                </div>
+            </fieldset>
+        </form>
+        <h2>Results</h2>
+        <div class="serverStatus-container">
+        </div>
+    </div>
+    <div class="templates" style="display: none;">
+        <template id="ServerFilterItemTemplate">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="Server" value="baseUrl" checked="checked" />
+                    <span class="text">name (alias)</span>
+                </label>
+            </div>
+        </template>
+        <template id="ServerResultItemTemplate">
+            <div class="serverStatus-item">
+                <div class="serverStatus-header">
+                    <div class="serverStatus-expanderState">
+                        <div class="serverStatus-minimized"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></div>
+                        <div class="serverStatus-maximized"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></div>
+                    </div>
+                    <h3>{name} ({alias}) <a href="javascript: void(0);" class="serverStatus-refreshButton">Refresh</a></h3>
+                    <div class="serverStatus-state">
+                        <div class="serverStatus-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></div>
+                        <div class="serverStatus-failed"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></div>
+                    </div>
+                </div>
+                <div class="serverStatus-content">
+                    <iframe src="{url}" name="{name}" frameborder="0" scrolling="yes">
+                        <p>Your browser does not support iframes.</p>
+                    </iframe>
+                </div>
+                <div>
+        </template>
     </div>
     {{>scripts}}
 </body>
