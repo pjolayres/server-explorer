@@ -71,7 +71,7 @@ var Main = (function () {
 
         svg4everybody();
 
-        $('.settings-form').on('submit', function () {
+        $('.settings').on('submit', function (e) {
             executeSettings();
 
             e.preventDefault();
@@ -153,7 +153,7 @@ var Main = (function () {
             });
         });
 
-        var urlPath = $.trim($('input[name="Urlpath"]').val());
+        var urlPath = $.trim($('input[name="UrlPath"]').val());
         if (urlPath == '/') {
             urlPath = '';
         }
@@ -171,6 +171,7 @@ var Main = (function () {
         });
 
         var serverStatusContainer = $('.serverStatus-container');
+        serverStatusContainer.empty();
         serverStatusContainer.append(serverItems.join(''));
 
         serverStatusContainer.find('.serverStatus-content').each(function () {
@@ -184,33 +185,14 @@ var Main = (function () {
             parameters.serverExplorerKey = serverExplorerKey;
 
             url = link.origin + link.pathname + '?' + $.param(parameters) + link.hash;
-            var title = 'Frame #' + serverExplorerKey;
-
+            var title = 'Frame #' + serverExplorerKey + ', url: ' + url;
             iframe.attr('name', title);
-
-            // var checkFrameStatus = function (data) {
-                
-            //     if (data.iframe[0].name !== data.title) {
-            //         console.log('Frame "' + data.url + '" has loaded.');
-            //         return;
-            //     }
-
-            //     setTimeout(checkFrameStatus, 1000, data);
-            // };
-
-            // checkFrameStatus({
-            //     url: url,
-            //     serverStatusContent: serverStatusContent,
-            //     iframe: iframe,
-            //     serverExplorerKey: serverExplorerKey,
-            //     title: title
-            // });
 
             iframe.on('load', function (e) {
                 var target = e.target;
                 var src = target.src;
 
-                console.log('iframe "' + target.name + '" has loaded');
+                console.log('iframe "' + src + '" has finished loading');
 
             });
 
@@ -224,7 +206,7 @@ var Main = (function () {
         var search = decodeURI(document.location.search);
         var pattern = /[&?]([^=^&^#]+)=([^&^#]+)/g;
         var match = null;
-        
+
         if ($.trim(url).length > 0) {
             var link = $('<a href="' + url + '">link</a>');
             search = link.search;
