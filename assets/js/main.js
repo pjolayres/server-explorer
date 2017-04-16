@@ -52,12 +52,12 @@ var Main = (function () {
         alias: 'Wikipedia',
         baseUrl: 'http://www.wikipedia.org'
     }, {
-        name: 'The Verge',
-        alias: 'The Verge',
-        baseUrl: 'http://www.theverge.com/asdfxzcva/asdf'
+        name: 'Status',
+        alias: 'The Status',
+        baseUrl: 'http://localhost:3000/status.html'
     }];
 
-    var _servers = _serverSets.dev;
+    var _servers = _serverSets.du;
 
     var _serverStatusContainerViews = ['list', 'grid2', 'sideBySidePartial', 'sideBySideFull'];
 
@@ -115,10 +115,9 @@ var Main = (function () {
             $('.serverStatus-container .serverStatus-item').removeClass('open');
         });
 
-        $(window).on('message', function (e) {
-
-
-        });
+        window.addEventListener('message', function (e) {
+            console.log('message received. data: ' + JSON.stringify(e.data || {}));
+        }, false);
 
     };
 
@@ -155,8 +154,8 @@ var Main = (function () {
         });
 
         var urlPath = $.trim($('input[name="Urlpath"]').val());
-        if (urlPath.length <= 0) {
-            urlPath = '/';
+        if (urlPath == '/') {
+            urlPath = '';
         }
 
         var serverResultItemTemplate = $('#ServerResultItemTemplate').html();
@@ -178,22 +177,40 @@ var Main = (function () {
             var serverStatusContent = $(this);
             var iframe = serverStatusContent.find('iframe');
             var url = serverStatusContent.attr('data-url');
-            var key = Math.floor(Math.random() * 100000000);
+            var serverExplorerKey = Math.floor(Math.random() * 100000000);
             var link = $('<a href="' + url + '">link</a>')[0];
 
-            if ($.trim(url.search).length > 0) {
+            var parameters = getUriParameters(url);
+            parameters.serverExplorerKey = serverExplorerKey;
 
-            }
+            url = link.origin + link.pathname + '?' + $.param(parameters) + link.hash;
+            var title = 'Frame #' + serverExplorerKey;
+
+            iframe.attr('name', title);
+
+            // var checkFrameStatus = function (data) {
+                
+            //     if (data.iframe[0].name !== data.title) {
+            //         console.log('Frame "' + data.url + '" has loaded.');
+            //         return;
+            //     }
+
+            //     setTimeout(checkFrameStatus, 1000, data);
+            // };
+
+            // checkFrameStatus({
+            //     url: url,
+            //     serverStatusContent: serverStatusContent,
+            //     iframe: iframe,
+            //     serverExplorerKey: serverExplorerKey,
+            //     title: title
+            // });
 
             iframe.on('load', function (e) {
                 var target = e.target;
                 var src = target.src;
 
-                if ($.trim(target.name).startsWith('404')) {
-                    console.log('iframe has failed with 404');
-                } else {
-                    console.log('iframe has loaded');
-                }
+                console.log('iframe "' + target.name + '" has loaded');
 
             });
 

@@ -27,14 +27,19 @@
             return parameters;
         }
 
-        var parameters = getUriParameters();
+        document.addEventListener("DOMContentLoaded", function (event) {
 
-        var message = {
-            status: 'loaded',
-            key: parameters.key
-        };
+            var parameters = getUriParameters();
 
-        window.postMessage(JSON.stringify(message), '*');
+            var data = {
+                status: 'loaded',
+                serverExplorerKey: parameters.serverExplorerKey
+            };
+
+            if (window.parent) {
+                window.parent.postMessage(data, '*');
+            }
+        });
     </script>
 </body>
 
