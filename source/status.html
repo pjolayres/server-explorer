@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Status</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+
+<body>
+    <script type="text/javascript">
+        function getUriParameters() {
+
+            var parameters = {};
+            var search = decodeURI(document.location.search);
+            var pattern = /[&?]([^=^&^#]+)=([^&^#]+)/g;
+            var match = null;
+
+            while (match = pattern.exec(search)) {
+                var parameter = match[1];
+                var value = match[2];
+
+                parameters[parameter] = decodeURIComponent(value.replace(/\+/g, ' '));
+            }
+
+            return parameters;
+        }
+
+        var parameters = getUriParameters();
+
+        var message = {
+            status: 'loaded',
+            key: parameters.key
+        };
+
+        window.postMessage(JSON.stringify(message), '*');
+    </script>
+</body>
+
+</html>

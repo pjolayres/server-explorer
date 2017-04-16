@@ -2,53 +2,64 @@ var Main = (function () {
 
     var _serverSets = {};
     _serverSets.du = [{
-            name: 'CPS',
-            alias: 'CPS',
-            baseUrl: 'http://10.100.167.197'
-        },
-        {
-            name: 'Web 1',
-            alias: '70',
-            baseUrl: 'http://10.100.188.70'
-        },
-        {
-            name: 'Web 2',
-            alias: '71',
-            baseUrl: 'http://10.100.188.71'
-        },
-        {
-            name: 'Web 3',
-            alias: '72',
-            baseUrl: 'http://10.100.188.72'
-        },
-        {
-            name: 'Web 4',
-            alias: '73',
-            baseUrl: 'http://10.100.188.73'
-        },
-        {
-            name: 'Web 5',
-            alias: '74',
-            baseUrl: 'http://10.100.188.74'
-        },
-        {
-            name: 'Web 6',
-            alias: '75',
-            baseUrl: 'http://10.100.188.75'
-        },
-        {
-            name: 'Web 7',
-            alias: '76',
-            baseUrl: 'http://10.100.188.76'
-        },
-        {
-            name: 'Web 8',
-            alias: '77',
-            baseUrl: 'http://10.100.188.77'
-        },
-    ];
-    
-    var _servers = _serverSets.du;
+        name: 'CPS',
+        alias: 'CPS',
+        baseUrl: 'http://10.100.167.197'
+    }, {
+        name: 'Web 1',
+        alias: '70',
+        baseUrl: 'http://10.100.188.70'
+    }, {
+        name: 'Web 2',
+        alias: '71',
+        baseUrl: 'http://10.100.188.71'
+    }, {
+        name: 'Web 3',
+        alias: '72',
+        baseUrl: 'http://10.100.188.72'
+    }, {
+        name: 'Web 4',
+        alias: '73',
+        baseUrl: 'http://10.100.188.73'
+    }, {
+        name: 'Web 5',
+        alias: '74',
+        baseUrl: 'http://10.100.188.74'
+    }, {
+        name: 'Web 6',
+        alias: '75',
+        baseUrl: 'http://10.100.188.75'
+    }, {
+        name: 'Web 7',
+        alias: '76',
+        baseUrl: 'http://10.100.188.76'
+    }, {
+        name: 'Web 8',
+        alias: '77',
+        baseUrl: 'http://10.100.188.77'
+    }, ];
+
+    _serverSets.dev = [{
+        name: 'DNS Not Resolved',
+        alias: 'Error',
+        baseUrl: 'http://www.zxcvawef.com'
+    }, {
+        name: 'Bing',
+        alias: 'Bing',
+        baseUrl: 'http://www.bing.com'
+    }, {
+        name: 'Wikipedia',
+        alias: 'Wikipedia',
+        baseUrl: 'http://www.wikipedia.org'
+    }, {
+        name: 'The Verge',
+        alias: 'The Verge',
+        baseUrl: 'http://www.theverge.com/asdfxzcva/asdf'
+    }];
+
+    var _servers = _serverSets.dev;
+
+    var _serverStatusContainerViews = ['list', 'grid2', 'sideBySidePartial', 'sideBySideFull'];
 
     var init = function () {
         initializeControls();
@@ -65,6 +76,48 @@ var Main = (function () {
 
             e.preventDefault();
             return false;
+        });
+
+        $('.serverExplorer-showSettingsButton').on('click', function () {
+            $(this).hide();
+            $('.serverExplorer-hideSettingsButton').show();
+            $('.settings').show();
+        });
+
+        $('.serverExplorer-hideSettingsButton').on('click', function () {
+            $(this).hide();
+            $('.serverExplorer-showSettingsButton').show();
+            $('.settings').hide();
+        });
+
+        $('.serverStatus-container').on('click', '.serverStatus-header', function () {
+            $(this).closest('.serverStatus-item').toggleClass('open');
+        });
+
+        $('.serverExplorer-changeViewButton').on('click', function () {
+            var serverStatusContainer = $('.serverStatus-container');
+            var currentView = serverStatusContainer.attr('data-view');
+            var viewIndex = _serverStatusContainerViews.indexOf(currentView);
+            var newIndex = viewIndex + 1;
+            if (newIndex > _serverStatusContainerViews.length - 1) {
+                newIndex = 0;
+            }
+            var newView = _serverStatusContainerViews[newIndex];
+
+            serverStatusContainer.attr('data-view', newView);
+        });
+
+        $('.serverExplorer-expandAllButton').on('click', function () {
+            $('.serverStatus-container .serverStatus-item').addClass('open');
+        });
+
+        $('.serverExplorer-collapseAllButton').on('click', function () {
+            $('.serverStatus-container .serverStatus-item').removeClass('open');
+        });
+
+        $(window).on('message', function (e) {
+
+
         });
 
     };
@@ -121,7 +174,54 @@ var Main = (function () {
         var serverStatusContainer = $('.serverStatus-container');
         serverStatusContainer.append(serverItems.join(''));
 
+        serverStatusContainer.find('.serverStatus-content').each(function () {
+            var serverStatusContent = $(this);
+            var iframe = serverStatusContent.find('iframe');
+            var url = serverStatusContent.attr('data-url');
+            var key = Math.floor(Math.random() * 100000000);
+            var link = $('<a href="' + url + '">link</a>')[0];
+
+            if ($.trim(url.search).length > 0) {
+
+            }
+
+            iframe.on('load', function (e) {
+                var target = e.target;
+                var src = target.src;
+
+                if ($.trim(target.name).startsWith('404')) {
+                    console.log('iframe has failed with 404');
+                } else {
+                    console.log('iframe has loaded');
+                }
+
+            });
+
+            iframe.attr('src', url);
+        });
     }
+
+    var getUriParameters = function (url) {
+
+        var parameters = {};
+        var search = decodeURI(document.location.search);
+        var pattern = /[&?]([^=^&^#]+)=([^&^#]+)/g;
+        var match = null;
+        
+        if ($.trim(url).length > 0) {
+            var link = $('<a href="' + url + '">link</a>');
+            search = link.search;
+        }
+
+        while (match = pattern.exec(search)) {
+            var parameter = match[1];
+            var value = match[2];
+
+            parameters[parameter] = decodeURIComponent(value.replace(/\+/g, ' '));
+        }
+
+        return parameters;
+    };
 
     return {
         init: init

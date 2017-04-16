@@ -169,7 +169,8 @@ gulp.task('handlebars', function() {
     };
 
     var files = [
-        ['source/index.html', 'dist/index.html']
+        ['source/index.html', 'dist/index.html'],        
+        ['source/status.html', 'dist/status.html']
     ];
 
     return files.forEach(function(filePair) {
