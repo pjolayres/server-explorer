@@ -64,7 +64,7 @@ var Main = (function () {
     var init = function () {
         initializeControls();
         initializeServersFilter();
-        executeSettings();
+        //executeSettings();
     };
 
     var initializeControls = function () {
@@ -117,6 +117,10 @@ var Main = (function () {
 
         window.addEventListener('message', function (e) {
             console.log('message received. data: ' + JSON.stringify(e.data || {}));
+
+            if (e.data && e.data.serverExplorerKey) {
+                $('.serverStatus-item[data-serverExplorerKey="' + e.data.serverExplorerKey + '"]').addClass('loaded');
+            }
         }, false);
 
     };
@@ -156,16 +160,23 @@ var Main = (function () {
         var urlPath = $.trim($('input[name="UrlPath"]').val());
         if (urlPath == '/') {
             urlPath = '';
+        } else if (urlPath.length > 0 && !urlPath.startsWith('/')) {
+            urlPath = urlPath.substring(1);
         }
 
         var serverResultItemTemplate = $('#ServerResultItemTemplate').html();
         var serverItems = [];
         selectedServers.forEach(function (server) {
 
+            var baseUrl = $.trim(server.baseUrl);
+            if (baseUrl.length > 0 && baseUrl.endsWith('/')) {
+                baseUrl = baseUrl.substring(0, baseUrl.length - 2);
+            }
+
             var serverItemHtml = serverResultItemTemplate;
             serverItemHtml = serverItemHtml.replace(/\{name}/g, server.name);
             serverItemHtml = serverItemHtml.replace(/\{alias}/g, server.alias);
-            serverItemHtml = serverItemHtml.replace(/\{url}/g, server.baseUrl + urlPath);
+            serverItemHtml = serverItemHtml.replace(/\{url}/g, baseUrl + urlPath);
 
             serverItems.push(serverItemHtml);
         });
@@ -180,6 +191,8 @@ var Main = (function () {
             var url = serverStatusContent.attr('data-url');
             var serverExplorerKey = Math.floor(Math.random() * 100000000);
             var link = $('<a href="' + url + '">link</a>')[0];
+
+            serverStatusContent.closest('.serverStatus-item').attr('data-serverExplorerKey', serverExplorerKey);
 
             var parameters = getUriParameters(url);
             parameters.serverExplorerKey = serverExplorerKey;

@@ -137,6 +137,34 @@ body {
                 border-top-width: 0;
             }
         }
+        &.loaded {
+            pointer-events: auto;
+            .serverStatus-state {
+                pointer-events: auto;
+                .serverStatus-success {
+                    pointer-events: auto;
+                    display: initial;
+                }
+                .serverStatus-failed {
+                    pointer-events: auto;
+                    display: none;
+                }
+            }
+        }
+        &.failed {
+            pointer-events: auto;
+            .serverStatus-state {
+                pointer-events: auto;
+                .serverStatus-success {
+                    pointer-events: auto;
+                    display: none;
+                }
+                .serverStatus-failed {
+                    pointer-events: auto;
+                    display: initial;
+                }
+            }
+        }
     }
     .serverStatus-header {
         pointer-events: auto;
@@ -179,8 +207,10 @@ body {
         line-height: 1em;
         font-size: 20px;
         color: white;
+        margin-right: 20px;
         .serverStatus-success {
             pointer-events: auto;
+            color: darkseagreen;
             display: none;
         }
         .serverStatus-failed {
