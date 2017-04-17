@@ -11,16 +11,18 @@
 <body>
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", function (event) {
-            var matches = $.trim(window.name).match(/^Frame #([0-9]+)/);
-            if (matches && matches.length > 1 && $.trim(matches[1]).length > 0) {
-                var serverExplorerKey = matches[1];
+            if (window.parent && window.parent !== window) {
+                var matches = $.trim(window.name).match(/^Frame #([0-9]+)/);
+                if (matches && matches.length > 1 && $.trim(matches[1]).length > 0) {
+                    var serverExplorerKey = matches[1];
 
-                var data = {
-                    status: 'loaded',
-                    serverExplorerKey: serverExplorerKey
-                };
+                    var data = {
+                        status: 'loaded',
+                        serverExplorerKey: serverExplorerKey
+                    };
 
-                window.parent.postMessage(data, '*');
+                    window.parent.postMessage(data, '*');
+                }
             }
         });
     </script>
