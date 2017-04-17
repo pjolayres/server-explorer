@@ -2,10 +2,6 @@ var Main = (function () {
 
     var _serverSets = {};
     _serverSets.du = [{
-        name: 'CPS',
-        alias: 'CPS',
-        baseUrl: 'http://10.100.167.197'
-    }, {
         name: 'Web 1',
         alias: '70',
         baseUrl: 'http://10.100.188.70'
@@ -37,7 +33,11 @@ var Main = (function () {
         name: 'Web 8',
         alias: '77',
         baseUrl: 'http://10.100.188.77'
-    }, ];
+    }, {
+        name: 'CPS',
+        alias: 'CPS',
+        baseUrl: 'http://10.100.167.197'
+    }];
 
     _serverSets.dev = [{
         name: 'DNS Not Resolved',
@@ -209,22 +209,17 @@ var Main = (function () {
         var serverStatusItem = serverStatusContent.closest('.serverStatus-item');
         var url = serverStatusContent.attr('data-url');
         var serverExplorerKey = Math.floor(Math.random() * 100000000);
-        var link = $('<a href="' + url + '">link</a>')[0];
-        
-        //var iframe = serverStatusContent.find('iframe');
-        var iframe = $($('#ServerStatusContentIframeTemplate').html());
-        serverStatusContent.empty();
-        serverStatusContent.append(iframe);
+        var title = 'Frame #' + serverExplorerKey;
 
         serverStatusItem.attr('data-serverExplorerKey', serverExplorerKey);
         serverStatusItem.removeClass('loaded');
-
-        var parameters = getUriParameters(url);
-        parameters.serverExplorerKey = serverExplorerKey;
-
-        url = link.origin + link.pathname + '?' + $.param(parameters) + link.hash;
-        var title = 'Frame #' + serverExplorerKey + ', url: ' + url;
-        iframe.attr('name', title);
+        
+        var iframeHtml = $('#ServerStatusContentIframeTemplate').html();
+        iframeHtml = iframeHtml.replace(/\{name}/g, title);
+        
+        var iframe = $(iframeHtml);
+        serverStatusContent.empty();
+        serverStatusContent.append(iframe);
 
         iframe.on('load', function (e) {
             var target = e.target;
