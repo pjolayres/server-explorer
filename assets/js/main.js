@@ -90,8 +90,22 @@ var Main = (function () {
             $('.settings').hide();
         });
 
-        $('.serverStatus-container').on('click', '.serverStatus-header', function () {
+        $('.serverStatus-container').on('click', '.serverStatus-header', function (e) {
+            if (e.target && $.trim(e.target.nodeName).toLowerCase() == 'a') {
+                return;
+            }
+
             $(this).closest('.serverStatus-item').toggleClass('open');
+        });
+
+        $('.serverStatus-container').on('click', '.serverStatus-refreshButton', function () {
+
+            var refreshButton = $(this);
+            var serverStatusItem = refreshButton.closest('.serverStatus-item');
+            var serverStatusContent = serverStatusItem.find('.serverStatus-content');
+
+            refreshServerStatusContent(serverStatusContent);
+
         });
 
         $('.serverExplorer-changeViewButton').on('click', function () {
@@ -186,32 +200,42 @@ var Main = (function () {
         serverStatusContainer.append(serverItems.join(''));
 
         serverStatusContainer.find('.serverStatus-content').each(function () {
-            var serverStatusContent = $(this);
-            var iframe = serverStatusContent.find('iframe');
-            var url = serverStatusContent.attr('data-url');
-            var serverExplorerKey = Math.floor(Math.random() * 100000000);
-            var link = $('<a href="' + url + '">link</a>')[0];
-
-            serverStatusContent.closest('.serverStatus-item').attr('data-serverExplorerKey', serverExplorerKey);
-
-            var parameters = getUriParameters(url);
-            parameters.serverExplorerKey = serverExplorerKey;
-
-            url = link.origin + link.pathname + '?' + $.param(parameters) + link.hash;
-            var title = 'Frame #' + serverExplorerKey + ', url: ' + url;
-            iframe.attr('name', title);
-
-            iframe.on('load', function (e) {
-                var target = e.target;
-                var src = target.src;
-
-                console.log('iframe "' + src + '" has finished loading');
-
-            });
-
-            iframe.attr('src', url);
+            refreshServerStatusContent(this);
         });
     }
+
+    var refreshServerStatusContent = function (contentElement) {
+        var serverStatusContent = $(contentElement);
+        var serverStatusItem = serverStatusContent.closest('.serverStatus-item');
+        var url = serverStatusContent.attr('data-url');
+        var serverExplorerKey = Math.floor(Math.random() * 100000000);
+        var link = $('<a href="' + url + '">link</a>')[0];
+        
+        //var iframe = serverStatusContent.find('iframe');
+        var iframe = $($('#ServerStatusContentIframeTemplate').html());
+        serverStatusContent.empty();
+        serverStatusContent.append(iframe);
+
+        serverStatusItem.attr('data-serverExplorerKey', serverExplorerKey);
+        serverStatusItem.removeClass('loaded');
+
+        var parameters = getUriParameters(url);
+        parameters.serverExplorerKey = serverExplorerKey;
+
+        url = link.origin + link.pathname + '?' + $.param(parameters) + link.hash;
+        var title = 'Frame #' + serverExplorerKey + ', url: ' + url;
+        iframe.attr('name', title);
+
+        iframe.on('load', function (e) {
+            var target = e.target;
+            var src = target.src;
+
+            console.log('iframe "' + src + '" has finished loading');
+
+        });
+
+        iframe.attr('src', url);
+    };
 
     var getUriParameters = function (url) {
 

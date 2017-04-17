@@ -62,8 +62,13 @@
                 </div>
                 <div>
         </template>
-        </div>
-        {{>scripts}}
+        <template id="ServerStatusContentIframeTemplate">
+            <iframe name="Loading" frameborder="0" scrolling="yes">
+                <p>Your browser does not support iframes.</p>
+            </iframe>
+        </template>
+    </div>
+    {{>scripts}}
 </body>
 
 </html>
