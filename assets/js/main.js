@@ -1,44 +1,6 @@
 var Main = (function () {
 
     var _serverSets = {};
-    _serverSets.du = [{
-        name: 'Web 1',
-        alias: '70',
-        baseUrl: 'http://10.100.188.70'
-    }, {
-        name: 'Web 2',
-        alias: '71',
-        baseUrl: 'http://10.100.188.71'
-    }, {
-        name: 'Web 3',
-        alias: '72',
-        baseUrl: 'http://10.100.188.72'
-    }, {
-        name: 'Web 4',
-        alias: '73',
-        baseUrl: 'http://10.100.188.73'
-    }, {
-        name: 'Web 5',
-        alias: '74',
-        baseUrl: 'http://10.100.188.74'
-    }, {
-        name: 'Web 6',
-        alias: '75',
-        baseUrl: 'http://10.100.188.75'
-    }, {
-        name: 'Web 7',
-        alias: '76',
-        baseUrl: 'http://10.100.188.76'
-    }, {
-        name: 'Web 8',
-        alias: '77',
-        baseUrl: 'http://10.100.188.77'
-    }, {
-        name: 'CPS',
-        alias: 'CPS',
-        baseUrl: 'http://10.100.167.197'
-    }];
-
     _serverSets.dev = [{
         name: 'DNS Not Resolved',
         alias: 'Error',
@@ -57,7 +19,7 @@ var Main = (function () {
         baseUrl: 'http://localhost:3000/status.html'
     }];
 
-    var _servers = _serverSets.du;
+    var _servers = _serverSets.dev;
 
     var _serverStatusContainerViews = ['list', 'grid2', 'sideBySidePartial', 'sideBySideFull'];
 
